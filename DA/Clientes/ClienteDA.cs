@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DA.Clientes;
 
-public class AgenteDA : IClienteDA
+public class ClienteDA : IClienteDA
 {
     private readonly SistemaSoporteContexto _ctx;
 
-    public AgenteDA(SistemaSoporteContexto ctx) => _ctx = ctx;
+    public ClienteDA(SistemaSoporteContexto ctx) => _ctx = ctx;
 
     public async Task<ResultadoPaginado<Cliente>> BuscarAsync(ClienteFiltro filtro, CancellationToken ct)
     {

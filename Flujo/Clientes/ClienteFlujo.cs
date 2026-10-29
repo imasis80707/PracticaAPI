@@ -4,14 +4,14 @@ using Abstracciones.Excepciones;
 
 namespace Flujo.Clientes;
 
-public class AgenteFlujo : IClienteFlujo
+public class ClienteFlujo : IClienteFlujo
 {
     private readonly IClienteDA _da;
     private readonly TimeProvider _reloj;
 
     // ****PROFESOR: **** TimeProvider en vez de DateTime.UtcNow directo: en las pruebas se puede
     // controlar el reloj. Sin esto, cualquier regla que dependa de la fecha es imposible de probar bien.
-    public AgenteFlujo(IClienteDA da, TimeProvider reloj)
+    public ClienteFlujo(IClienteDA da, TimeProvider reloj)
     {
         _da = da;
         _reloj = reloj;
@@ -22,7 +22,7 @@ public class AgenteFlujo : IClienteFlujo
         var pagina = await _da.BuscarAsync(filtro, ct);
         return new ResultadoPaginado<ClienteDto>
         {
-            Items = pagina.Items.Select(AgenteMapeador.ADto).ToList(),
+            Items = pagina.Items.Select(ClienteMapeador.ADto).ToList(),
             Total = pagina.Total,
             Pagina = pagina.Pagina,
             Tamano = pagina.Tamano
@@ -33,7 +33,7 @@ public class AgenteFlujo : IClienteFlujo
     {
         var cliente = await _da.ObtenerPorIdAsync(id, ct)
             ?? throw new NoEncontradoException("Cliente", id);
-        return AgenteMapeador.ADto(cliente);
+        return ClienteMapeador.ADto(cliente);
     }
 
     public async Task<ClienteDto> CrearAsync(ClienteCrearDto dto, CancellationToken ct)
@@ -53,7 +53,7 @@ public class AgenteFlujo : IClienteFlujo
         };
 
         await _da.AgregarAsync(cliente, ct);
-        return AgenteMapeador.ADto(cliente);
+        return ClienteMapeador.ADto(cliente);
     }
 
     public async Task ActualizarAsync(int id, ClienteActualizarDto dto, CancellationToken ct)
@@ -93,7 +93,7 @@ public class AgenteFlujo : IClienteFlujo
     public async Task<List<ClienteDto>> BuscarPorNombreSpAsync(string? nombre, CancellationToken ct)
     {
         var clientes = await _da.BuscarPorNombreSpAsync(nombre?.Trim(), ct);
-        return clientes.Select(AgenteMapeador.ADto).ToList();
+        return clientes.Select(ClienteMapeador.ADto).ToList();
     }
 
     // UNA sola regla de normalización para TODOS los caminos de escritura.

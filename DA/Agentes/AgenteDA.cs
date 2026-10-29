@@ -74,6 +74,7 @@ public class AgenteDA : IAgenteDA
 
         existente.Nombre = datos.Nombre;
         existente.Correo = datos.Correo;
+        existente.Telefono = datos.Telefono;
         existente.CapMaxTicket = datos.CapMaxTicket;
         existente.Activo = datos.Activo;
 
