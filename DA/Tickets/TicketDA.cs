@@ -31,6 +31,7 @@ public class TicketDA : ITicketDA
 
         var items = await TicketConsultas.Ordenar(consulta, filtro.Orden)
             .Include(t => t.Cliente)
+            .Include(t=> t.Agente)
             .Include(t => t.TicketEtiquetas).ThenInclude(te => te.Etiqueta)
             .Skip((filtro.Pagina - 1) * filtro.Tamano)
             .Take(filtro.Tamano)
@@ -131,5 +132,6 @@ public class TicketDA : ITicketDA
     private IQueryable<Ticket> ConDetalle() =>
         _ctx.Tickets.AsNoTracking()
             .Include(t => t.Cliente)
+            .Include(t => t.Agente)
             .Include(t => t.TicketEtiquetas).ThenInclude(te => te.Etiqueta);
 }

@@ -22,7 +22,7 @@ namespace DA.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Abstracciones.Agente.Agente", b =>
+            modelBuilder.Entity("Abstracciones.Agentes.Agente", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -278,9 +278,10 @@ namespace DA.Migrations
 
             modelBuilder.Entity("Abstracciones.Tickets.Ticket", b =>
                 {
-                    b.HasOne("Abstracciones.Agente.Agente", null)
+                    b.HasOne("Abstracciones.Agentes.Agente", "Agente")
                         .WithMany("Tickets")
-                        .HasForeignKey("AgenteId");
+                        .HasForeignKey("AgenteId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Abstracciones.Clientes.Cliente", "Cliente")
                         .WithMany("Tickets")
@@ -288,10 +289,12 @@ namespace DA.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Agente");
+
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("Abstracciones.Agente.Agente", b =>
+            modelBuilder.Entity("Abstracciones.Agentes.Agente", b =>
                 {
                     b.Navigation("Tickets");
                 });

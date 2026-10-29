@@ -14,6 +14,7 @@ internal static class TicketMapeador
         t.ClienteId,
         t.Cliente?.Nombre,
         t.AgenteId,
+        t.Agente?.Nombre,
         t.Reaperturas,
         t.FechaCreacion,
         t.FechaActualizacion,

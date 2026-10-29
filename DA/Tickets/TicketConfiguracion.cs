@@ -33,5 +33,12 @@ public class TicketConfiguracion : IEntityTypeConfiguration<Ticket>
         b.HasIndex(t => new { t.Estado, t.Prioridad });
         b.HasIndex(t => t.FechaCreacion);
         b.HasIndex(t => t.ClienteId);
+
+        // Relación 1-N Agente -> Ticket. Restrict: no se puede borrar un Agente que tenga tickets.
+        b.HasOne(t => t.Agente)
+            .WithMany(c => c.Tickets)
+            .HasForeignKey(t => t.AgenteId)
+            .OnDelete(DeleteBehavior.Restrict);
+        b.HasIndex(t => t.AgenteId);
     }
 }

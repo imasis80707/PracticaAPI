@@ -45,6 +45,7 @@ public record TicketDto(
     int ClienteId,
     string? ClienteNombre,
     int? AgenteId,
+    string? AgenteNombre,
     int Reaperturas,
     DateTime FechaCreacion,
     DateTime FechaActualizacion,

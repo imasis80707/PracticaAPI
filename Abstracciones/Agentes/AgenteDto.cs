@@ -24,7 +24,7 @@ namespace Abstracciones.Agentes
 
         [Range(1, 50, ErrorMessage = "La cantidad debe estar entre 1 y 50.")]
         public int CapMaxTicket { get; set; }
-
+            
         public bool Activo { get; set; }
     }
 

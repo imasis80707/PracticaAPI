@@ -1,3 +1,4 @@
+using Abstracciones.Agentes;
 using Abstracciones.Clientes;
 using Abstracciones.Comunes;
 using Abstracciones.Etiquetas;
@@ -25,14 +26,16 @@ public class TicketFlujo : ITicketFlujo
     private readonly ITicketDA _da;
     private readonly IClienteDA _clienteDA;
     private readonly IEtiquetaDA _etiquetaDA;
+    private readonly IAgenteDA _agenteDA;
     private readonly TimeProvider _reloj;
 
-    public TicketFlujo(ITicketDA da, IClienteDA clienteDA, IEtiquetaDA etiquetaDA, TimeProvider reloj)
+    public TicketFlujo(ITicketDA da, IClienteDA clienteDA, IEtiquetaDA etiquetaDA, TimeProvider reloj, IAgenteDA agenteDA)
     {
         _da = da;
         _clienteDA = clienteDA;
         _etiquetaDA = etiquetaDA;
         _reloj = reloj;
+        _agenteDA = agenteDA;
     }
 
     public async Task<ResultadoPaginado<TicketDto>> ListarAsync(TicketFiltro filtro, CancellationToken ct)
@@ -103,6 +106,19 @@ public class TicketFlujo : ITicketFlujo
             throw new ConflictoException("Un ticket de prioridad Crítica no puede pasar a Resuelto sin agente asignado.");
 
         // Todas las validaciones pasaron: recién ahora se modifica el objeto.
+        if (dto.AgenteId is int agenteId && agenteId != ticket.AgenteId)
+        {
+            var a = await _agenteDA.ObtenerPorIdAsync(agenteId, ct)
+                ?? throw new NoEncontradoException("Agente", agenteId);
+
+            if (!a.Activo)
+                throw new ConflictoException($"El agente '{a.Nombre}' está inactivo.");
+
+            var abiertos = await _agenteDA.ContarTicketsActivosAsync(agenteId, ct);
+            if (abiertos >= a.CapMaxTicket)
+                throw new ConflictoException($"El agente '{a.Nombre}' alcanzó su capacidad máxima ({a.CapMaxTicket}).");
+        }
+
         if (ticket.Estado == EstadoTicket.Resuelto && nuevoEstado == EstadoTicket.EnProceso)
             ticket.Reaperturas++;
 

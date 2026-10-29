@@ -21,5 +21,7 @@ namespace Abstracciones.Agentes
 
         /// <summary>Ejemplo didáctico de procedimiento almacenado con parámetros (sin concatenar SQL).</summary>
         Task<List<Agente>> BuscarPorNombreSpAsync(string? nombre, CancellationToken ct);
+        Task<int> ContarTicketsActivosAsync(int agenteId, CancellationToken ct);
     }
 }
+    

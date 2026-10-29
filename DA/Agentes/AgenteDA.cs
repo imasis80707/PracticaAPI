@@ -1,6 +1,7 @@
 using Abstracciones.Agentes;
 using Abstracciones.Comunes;
 using Abstracciones.Excepciones;
+using Abstracciones.Tickets;
 using DA.Comunes;
 using DA.Contexto;
 using Microsoft.Data.SqlClient;
@@ -118,4 +119,8 @@ public class AgenteDA : IAgenteDA
             .AsNoTracking()
             .ToListAsync(ct);
     }
+
+    public Task<int> ContarTicketsActivosAsync(int agenteId, CancellationToken ct) =>
+        _ctx.Tickets.CountAsync(t => t.AgenteId == agenteId &&
+        (t.Estado == EstadoTicket.Abierto || t.Estado == EstadoTicket.EnProceso), ct);
 }
