@@ -1,5 +1,4 @@
-using Abstracciones.Agente;
-using Abstracciones.Clientes;
+using Abstracciones.Agentes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

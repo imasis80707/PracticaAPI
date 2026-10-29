@@ -1,4 +1,4 @@
-using Abstracciones.Agente;
+using Abstracciones.Agentes;
 using Abstracciones.Clientes;
 using Abstracciones.Comentarios;
 using Abstracciones.Etiquetas;

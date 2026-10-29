@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Abstracciones.Agente
+namespace Abstracciones.Agentes
 {
     public class AgenteCrearDto
     {

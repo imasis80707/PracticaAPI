@@ -1,5 +1,4 @@
-using Abstracciones.Agente;
-using Abstracciones.Clientes;
+using Abstracciones.Agentes;
 using Abstracciones.Comunes;
 using Abstracciones.Excepciones;
 using DA.Comunes;
@@ -53,18 +52,18 @@ public class AgenteDA : IAgenteDA
     public Task<Agente?> ObtenerPorCorreoAsync(string correo, CancellationToken ct) =>
         _ctx.Agentes.AsNoTracking().FirstOrDefaultAsync(c => c.Correo == correo, ct);
 
-    public async Task<Agente> AgregarAsync(Agente agente, CancellationToken ct)
+    public async Task<Agente> AgregarAsync(Agente agentes, CancellationToken ct)
     {
-        _ctx.Agentes.Add(agente);
+        _ctx.Agentes.Add(agentes);
         try
         {
             await _ctx.SaveChangesAsync(ct);
         }
         catch (DbUpdateException ex) when (ErroresSql.EsDuplicado(ex))
         {
-            throw new ConflictoException($"Ya existe un cliente con el correo '{agente.Correo}'.");
+            throw new ConflictoException($"Ya existe un agente con el correo '{agentes.Correo}'.");
         }
-        return agente;
+        return agentes;
     }
 
     public async Task<bool> ActualizarAsync(Agente datos, CancellationToken ct)
